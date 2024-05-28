@@ -28,6 +28,25 @@ app.get('/api/students', (req, res) => {
     res.send(students);
 });
 
+// Edit a student's information
+app.put('/api/students/:id', (req, res) => {
+    const { id } = req.params;
+    const { name, age, email, course } = req.body;
+
+    const student = students.find(s => s.id === parseInt(id));
+
+    if (!student) {
+        return res.status(404).send({ message: 'Student not found' });
+    }
+
+    if (name) student.name = name;
+    if (age) student.age = age;
+    if (email) student.email = email;
+    if (course) student.course = course;
+
+    res.send({ message: 'Student updated successfully', student });
+});
+
 // Start the server
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
